@@ -120,6 +120,8 @@
 
         .btn-danger {
             background-color: var(--danger-color);
+            padding: 10px 15px;
+            font-size: 0.9rem;
         }
 
         .btn-danger:hover {
@@ -394,6 +396,9 @@
         
         <div class="section">
             <h2>كافة المصروفات</h2>
+            <div class="actions" style="justify-content: flex-end; margin-bottom: 15px;">
+                <button onclick="confirmClearAll()" class="btn-danger">حذف جميع المصروفات</button>
+            </div>
             <div id="all-expenses"></div>
         </div>
         
@@ -512,6 +517,26 @@
                 updateExpensesDisplay();
                 showToast('تم حذف المصروف بنجاح', 'success');
             }
+        }
+        
+        // تأكيد حذف جميع المصروفات
+        function confirmClearAll() {
+            if (expenses.length === 0) {
+                showToast('لا توجد مصروفات لحذفها', 'warning');
+                return;
+            }
+
+            if (confirm('هل أنت متأكد من حذف جميع المصروفات؟ لا يمكن التراجع عن هذا الإجراء!')) {
+                clearAllExpenses();
+            }
+        }
+
+        // حذف جميع المصروفات
+        function clearAllExpenses() {
+            expenses = [];
+            saveData();
+            updateExpensesDisplay();
+            showToast('تم حذف جميع المصروفات بنجاح', 'success');
         }
         
         // حفظ البيانات في localStorage
