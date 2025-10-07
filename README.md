@@ -527,7 +527,7 @@
             <div class="control-panel">
                 <div class="control-group">
                     <label for="searchSpeed">سرعة البحث (مللي ثانية بين كل عبارة):</label>
-                    <input type="number" id="searchSpeed" value="50" min="1000" max="10000" step="500">
+                    <input type="number" id="searchSpeed" value="3000" min="1000" max="10000" step="500">
                 </div>
 
                 <div class="control-group">
